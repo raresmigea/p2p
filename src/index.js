@@ -2,14 +2,15 @@ const net = require('net');
 const EventEmitter = require('events');
 const splitStream = require('./split-stream');
 
-const random4digithex = () => Math.random().toString(16).split('.')[1].substr(0, 4);
-const randomuuid = () => new Array(8).fill(0).map(() => random4digithex()).join('-');
+const random4digithex = () =>
+  Math.random().toString(16).split('.')[1].substr(0, 4);
+const randomuuid = () =>
+  new Array(8)
+    .fill(0)
+    .map(() => random4digithex())
+    .join('-');
 
 module.exports = (options) => {
-  //
-  // Layer 1 - handle all the established connections, store
-  // them in a map and emit corresponding events
-  //
   const connections = new Map();
   const emitter = new EventEmitter();
 
@@ -41,7 +42,9 @@ module.exports = (options) => {
     const socket = connections.get(connectionId);
 
     if (!socket) {
-      throw new Error(`Attempt to send data to connection that does not exist ${connectionId}`);
+      throw new Error(
+        `Attempt to send data to connection that does not exist ${connectionId}`
+      );
     }
 
     socket.write(JSON.stringify(message));
@@ -155,11 +158,22 @@ module.exports = (options) => {
 
   // 2 methods to send data either to all nodes in the network
   // or to a specific node (direct message)
-  const broadcast = (message, id = randomuuid(), origin = NODE_ID, ttl = 255) => {
+  const broadcast = (
+    message,
+    id = randomuuid(),
+    origin = NODE_ID,
+    ttl = 255
+  ) => {
     sendPacket({ id, ttl, type: 'broadcast', message, origin });
   };
 
-  const direct = (destination, message, id = randomuuid(), origin = NODE_ID, ttl = 255) => {
+  const direct = (
+    destination,
+    message,
+    id = randomuuid(),
+    origin = NODE_ID,
+    ttl = 255
+  ) => {
     sendPacket({ id, ttl, type: 'direct', message, destination, origin });
   };
 
@@ -178,7 +192,10 @@ module.exports = (options) => {
     // Let's pop up the broadcast message and send it
     // forward on the chain
     if (packet.type === 'broadcast') {
-      emitter.emit('broadcast', { message: packet.message, origin: packet.origin });
+      emitter.emit('broadcast', {
+        message: packet.message,
+        origin: packet.origin,
+      });
       broadcast(packet.message, packet.id, packet.origin, packet.ttl - 1);
     }
 
@@ -186,16 +203,28 @@ module.exports = (options) => {
     // for us and send it forward if not
     if (packet.type === 'direct') {
       if (packet.destination === NODE_ID) {
-        emitter.emit('direct', { origin: packet.origin, message: packet.message });
+        emitter.emit('direct', {
+          origin: packet.origin,
+          message: packet.message,
+        });
       } else {
-        direct(packet.destination, packet.message, packet.id, packet.origin, packet.ttl - 1);
+        direct(
+          packet.destination,
+          packet.message,
+          packet.id,
+          packet.origin,
+          packet.ttl - 1
+        );
       }
     }
   });
 
   return {
-    listen, connect, close,
-    broadcast, direct,
+    listen,
+    connect,
+    close,
+    broadcast,
+    direct,
     on: emitter.on.bind(emitter),
     off: emitter.off.bind(emitter),
     id: NODE_ID,
