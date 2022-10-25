@@ -2,12 +2,12 @@ const net = require('net');
 const EventEmitter = require('events');
 const splitStream = require('./split-stream');
 
-const random4digithex = () =>
+const random4DigitHex = () =>
   Math.random().toString(16).split('.')[1].substr(0, 4);
 const randomUUID = () =>
   new Array(8)
     .fill(0)
-    .map(() => random4digithex())
+    .map(() => random4DigitHex())
     .join('-');
 
 module.exports = (options) => {
