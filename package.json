@@ -1,14 +1,14 @@
 {
   "name": "@raresmigea/p2p",
   "version": "1.1.0",
-  "description": "Lightweight P2P libary for Node",
+  "description": "Lightweight P2P library for Node",
   "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raresmigea/p2p.git"
   },
   "author": "raresmigea",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/raresmigea/p2p/issues"
   },
