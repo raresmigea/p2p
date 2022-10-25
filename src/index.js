@@ -134,7 +134,7 @@ module.exports = (options) => {
   });
 
   // Finally we send data to the node
-  // by finnding it's connection and using _send
+  // by finding it's connection and using _send
   const send = (nodeId, data) => {
     const connectionId = neighbors.get(nodeId);
 
@@ -149,7 +149,7 @@ module.exports = (options) => {
   //
   const alreadySeenMessages = new Set();
 
-  // A method to send packet to other nodes (all neightbors)
+  // A method to send packet to other nodes (all neighbors)
   const sendPacket = (packet) => {
     for (const $nodeId of neighbors.keys()) {
       send($nodeId, packet);
