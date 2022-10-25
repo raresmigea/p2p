@@ -4,7 +4,7 @@ const splitStream = require('./split-stream');
 
 const random4digithex = () =>
   Math.random().toString(16).split('.')[1].substr(0, 4);
-const randomuuid = () =>
+const randomUUID = () =>
   new Array(8)
     .fill(0)
     .map(() => random4digithex())
@@ -15,9 +15,9 @@ module.exports = (options) => {
   const emitter = new EventEmitter();
 
   // Handle all TCP connections same way, no matter
-  // if it's incoming or outcoming, we're p2p
+  // if it's incoming or out coming, we're p2p
   const handleNewSocket = (socket) => {
-    const connectionId = randomuuid();
+    const connectionId = randomUUID();
 
     connections.set(connectionId, socket);
     emitter.emit('_connect', connectionId);
@@ -86,7 +86,7 @@ module.exports = (options) => {
   // Layer 2 - create Nodes, assign IDs, handshake
   // and keep neighbors in a collection
   //
-  const NODE_ID = randomuuid();
+  const NODE_ID = randomUUID();
   const neighbors = new Map();
 
   // A helper to find node id by connection id
@@ -160,7 +160,7 @@ module.exports = (options) => {
   // or to a specific node (direct message)
   const broadcast = (
     message,
-    id = randomuuid(),
+    id = randomUUID(),
     origin = NODE_ID,
     ttl = 255
   ) => {
@@ -170,7 +170,7 @@ module.exports = (options) => {
   const direct = (
     destination,
     message,
-    id = randomuuid(),
+    id = randomUUID(),
     origin = NODE_ID,
     ttl = 255
   ) => {
