@@ -21,7 +21,7 @@ node.listen(port, () => {
 
   process.stdin.on('data', (data) => {
     const text = data.toString().trim();
-
+    let balance = 0;
     if (text.startsWith('connect')) {
       const [, ipport] = text.split(' ');
       const [ip, port] = ipport.split(':');
@@ -33,9 +33,13 @@ node.listen(port, () => {
     } else if (text.startsWith('name')) {
       [, name] = text.split(' ');
       console.log(`Name changed to "${name}"`);
+    } else if (text.startsWith('pay')) {
+      [, pay] = text.split(' ');
+      console.log(`Balance is now -${pay}`);
+      node.broadcast(`You received ${pay} from ${name}. Balance is now ${pay}`);
     } else {
       node.broadcast({ name, text });
-      console.log(`${'\033[F'}You: ${text}`);
+      console.log(`${'\033[F'}You: ${text} test`);
     }
   });
 });

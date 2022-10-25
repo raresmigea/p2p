@@ -50,8 +50,8 @@ module.exports = (options) => {
     socket.write(JSON.stringify(message));
   };
 
-  // A method for the libabry consumer to
-  // esstablish connection to other nodes
+  // A method for the library consumer to
+  // establish connection to other nodes
   const connect = (ip, port, cb) => {
     const socket = new net.Socket();
 
